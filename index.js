@@ -89,7 +89,7 @@ Admin.prototype.removeDatabase = function (db, cb) {
 }
 
 Admin.prototype.getPermissions = function (db, cb) {
-  this._request('GET', db + '/_security', null, null, cb); 
+  this._request('GET', db + '/_security', null, null, cb);
 }
 Admin.prototype.grantMembership = function (user, db, cb) {
   var self = this;
@@ -99,6 +99,7 @@ Admin.prototype.grantMembership = function (user, db, cb) {
     if (perms && perms._rev) {
       headers = { 'If-Match': perms._rev };
     }
+    perms.couchdb_auth_only = true
     perms.admins = perms.admins || { names: [], roles: [] };
     perms.members = perms.members || { names: [], roles: [] };
     var pos = perms.members.names.indexOf(user);
@@ -116,6 +117,7 @@ Admin.prototype.revokeMembership = function (user, db, cb) {
     if (perms && perms._rev) {
       headers['If-Match'] = perms._rev;
     }
+    perms.couchdb_auth_only = true
     perms.admins = perms.admins || { names: [], roles: [] };
     perms.members = perms.members || { names: [], roles: [] };
     var pos = perms.members.names.indexOf(user);
@@ -133,6 +135,7 @@ Admin.prototype.grantAdmin = function (user, db, cb) {
     if (perms && perms._rev) {
       headers['If-Match'] = perms._rev;
     }
+    perms.couchdb_auth_only = true
     perms.admins = perms.admins || { names: [], roles: [] };
     perms.members = perms.members || { names: [], roles: [] };
     var pos = perms.admins.names.indexOf(user);
@@ -150,6 +153,7 @@ Admin.prototype.revokeAdmin = function (user, db, cb) {
     if (perms && perms._rev) {
       headers['If-Match'] = perms._rev;
     }
+    perms.couchdb_auth_only = true
     perms.admins = perms.admins || { names: [], roles: [] };
     perms.members = perms.members || { names: [], roles: [] };
     var pos = perms.admins.names.indexOf(user);
